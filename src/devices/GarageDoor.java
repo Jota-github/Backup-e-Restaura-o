@@ -1,6 +1,7 @@
 package devices;
+import java.io.Serializable;
 
-public class GarageDoor {
+public class GarageDoor implements Serializable {
     private String location;
 
     public GarageDoor(String location) {

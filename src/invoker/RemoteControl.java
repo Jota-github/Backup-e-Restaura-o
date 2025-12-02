@@ -9,7 +9,7 @@ import java.util.List;
 public class RemoteControl {
     private Command[] onCommands;
     private Command[] offCommands;
-    private List<Command> commandHistory; // Lista para o histórico de backup
+    private List<Command> commandHistory;
 
     public RemoteControl() {
         onCommands = new Command[7];
@@ -30,27 +30,26 @@ public class RemoteControl {
 
     public void onButtonWasPushed(int slot) {
         onCommands[slot].execute();
-        commandHistory.add(onCommands[slot]); // Adiciona ao histórico
-        store(); // Salva no disco a cada ação (simulação de log)
+        commandHistory.add(onCommands[slot]);
+        store(); 
     }
 
     public void offButtonWasPushed(int slot) {
         offCommands[slot].execute();
-        commandHistory.add(offCommands[slot]); // Adiciona ao histórico
-        store(); // Salva no disco
+        commandHistory.add(offCommands[slot]);
+        store(); 
     }
 
-    // Funcionalidade 1: STORE (Backup)
+    // Backup: Salva o histórico no disco
     public void store() {
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("data/command_log.ser"))) {
             out.writeObject(commandHistory);
-            // System.out.println("[LOG] Backup saved to disk."); // Opcional: comentar para não poluir o console
         } catch (IOException e) {
             System.err.println("Error saving backup: " + e.getMessage());
         }
     }
 
-    // Funcionalidade 2: LOAD (Restore)
+    // Restore: Carrega o histórico e reexecuta
     @SuppressWarnings("unchecked")
     public void load() {
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream("data/command_log.ser"))) {
@@ -58,7 +57,7 @@ public class RemoteControl {
             commandHistory = (List<Command>) in.readObject();
             
             for (Command command : commandHistory) {
-                command.execute(); // Re-executa cada comando salvo
+                command.execute();
             }
             System.out.println("--- Restauração Concluída ---");
             
@@ -67,15 +66,5 @@ public class RemoteControl {
         } catch (Exception e) {
             System.err.println("Erro ao restaurar backup: " + e.getMessage());
         }
-    }
-    
-    // Método auxiliar para imprimir o controle (opcional, igual ao livro)
-    public String toString() {
-        StringBuffer stringBuff = new StringBuffer();
-        stringBuff.append("\n------ Remote Control ------\n");
-        for (int i = 0; i < onCommands.length; i++) {
-            stringBuff.append("[slot " + i + "] " + onCommands[i].getClass().getName() + "    " + offCommands[i].getClass().getName() + "\n");
-        }
-        return stringBuff.toString();
     }
 }

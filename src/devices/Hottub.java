@@ -1,6 +1,7 @@
 package devices;
+import java.io.Serializable;
 
-public class Hottub {
+public class Hottub implements Serializable {
     private boolean on;
     private int temperature;
 

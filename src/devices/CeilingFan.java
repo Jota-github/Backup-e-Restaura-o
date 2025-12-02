@@ -1,6 +1,7 @@
- package devices;
+package devices;
+import java.io.Serializable;
 
-public class CeilingFan {
+public class CeilingFan implements Serializable {
     public static final int HIGH = 3;
     public static final int MEDIUM = 2;
     public static final int LOW = 1;

@@ -1,6 +1,7 @@
 package devices;
+import java.io.Serializable;
 
-public class TV {
+public class TV implements Serializable {
     private String location;
 
     public TV(String location) {

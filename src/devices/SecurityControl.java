@@ -1,6 +1,7 @@
 package devices;
+import java.io.Serializable;
 
-public class SecurityControl {
+public class SecurityControl implements Serializable {
     public void arm() {
         System.out.println("Security Control is armed");
     }

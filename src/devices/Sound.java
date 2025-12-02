@@ -1,6 +1,7 @@
 package devices;
+import java.io.Serializable;
 
-public class Sound {
+public class Sound implements Serializable {
     private String description;
 
     public Sound(String description) {

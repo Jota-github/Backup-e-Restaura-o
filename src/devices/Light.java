@@ -1,6 +1,7 @@
 package devices;
+import java.io.Serializable;
 
-public class Light {
+public class Light implements Serializable {
     private String location;
 
     public Light(String location) {
