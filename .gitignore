@@ -1,0 +1,24 @@
+# Java
+*.class
+*.log
+*.ctxt
+.MTJ.tmp/
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# IDE specific (Eclipse/IntelliJ/VSCode)
+.classpath
+.project
+.settings/
+.idea/
+*.iml
+.vscode/
+
+# Dados de execução (não queremos comitar o log de teste)
+data/*.ser
+data/*.txt
