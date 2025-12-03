@@ -1,0 +1,37 @@
+# Relatório de Uso de IA - Atividade Backup e Restauração
+
+Este documento registra o processo de desenvolvimento da solução utilizando auxílio de Inteligência Artificial, conforme solicitado na atividade.
+
+## 1. Estrutura Inicial do Projeto
+* **Prompt Utilizado:** "O programa é em Java, você sabe disso? Preciso mudar algo em meus arquivos? Quero que primeiro você faça as pastas necessárias para o projeto."
+* **Resposta da IA:** Sugeriu a criação de pacotes para organizar o código: `client`, `commands`, `devices` e `invoker`, além de configurar o `.gitignore` para Java.
+* **Ajuste Manual:** Aceitei a sugestão integralmente, pois segue as boas práticas de organização de pacotes em Java e facilita a manutenção do padrão Command.
+
+## 2. Implementação dos Dispositivos (Receivers)
+* **Prompt Utilizado:** "Gere o código Java para as classes 'Receiver' baseadas no diagrama UML fornecido: TV, Sound, CeilingFan, GarageDoor, Light, Hottub e SecurityControl. Elas devem ter apenas os métodos básicos imprimindo no console."
+* **Resposta da IA:** Gerou as classes com `System.out.println` simulando as ações.
+* **Ajuste Manual:** Nenhum ajuste de lógica foi necessário nesta etapa inicial, apenas a verificação se os nomes dos métodos batiam com o diagrama.
+
+## 3. Implementação dos Comandos (Command Pattern)
+* **Prompt Utilizado:** "Gere a interface Command e as classes de comando concretas para os dispositivos. A interface Command deve estender `Serializable` para permitir salvar em disco. Cada comando deve ter um método `execute()`."
+* **Resposta da IA:** A IA criou a interface estendendo `Serializable` e todas as classes de comando (ex: `LightOnCommand`, `TVOffCommand`) implementando essa interface.
+* **Ajuste Manual:** Verifiquei se todos os comandos solicitados no diagrama estavam presentes. Tive que solicitar explicitamente a criação de comandos faltantes como `TVOnCommand` e `SoundOnCommand` que foram omitidos na primeira geração.
+
+## 4. Implementação do Invoker (Controle com Backup)
+* **Prompt Utilizado:** "Crie a classe RemoteControl (Invoker). Ela deve ter um array para comandos. Implemente os métodos `setCommand`, `onButtonWasPushed` e `offButtonWasPushed`. Implemente a funcionalidade de Backup e Restore: um método `store()` que serializa o histórico em 'data/command_log.ser' e um `load()` que lê e re-executa."
+* **Resposta da IA:** Gerou a classe `RemoteControl` usando `ObjectOutputStream` e uma `List<Command>` para o histórico.
+* **Ajuste Manual:** Adicionei mensagens de log no console (System.out.println) dentro do método `load()` para visualizar claramente quando a "Pane Elétrica" era recuperada durante a execução.
+
+## 5. Simulação e Testes (Client)
+* **Prompt Utilizado:** "Crie uma classe principal 'Client' para testar. Instancie o controle e os dispositivos, configure os slots e aperte botões. Ao final, simule uma falha criando um novo controle e chamando `load()`."
+* **Resposta da IA:** Gerou o `main` com a sequência de testes.
+* **Problema Encontrado:** Ao rodar o código, o sistema apresentou erro ao tentar salvar o backup (`java.io.FileNotFoundException` e `java.io.NotSerializableException`).
+
+## 6. Correções Críticas e Refinamento
+* **Problema 1 (Pasta inexistente):** O código tentava salvar em `data/` mas a pasta não existia.
+    * **Ajuste:** Criei manualmente a pasta `data` na raiz do projeto.
+* **Problema 2 (Erro de Serialização):** A IA implementou `Serializable` apenas nos Comandos, mas esqueceu que os Dispositivos (TV, Light, etc.) são atributos dentro dos comandos. Isso causou o erro `NotSerializableException`.
+    * **Ajuste Manual (Importante):** Tive que alterar **todas** as classes dentro do pacote `devices` para adicionar `implements Serializable`. Sem esse ajuste humano, a funcionalidade de backup não funcionaria, pois o Java exige que todo o grafo de objetos seja serializável.
+
+## Conclusão
+A IA foi essencial para gerar a estrutura repetitiva (boilerplate) dos comandos e dispositivos, mas o conhecimento técnico sobre Serialização em Java foi necessário para corrigir o erro crítico que impedia a persistência dos dados.
